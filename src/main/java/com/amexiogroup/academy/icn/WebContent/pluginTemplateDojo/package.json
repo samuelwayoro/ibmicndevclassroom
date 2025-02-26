@@ -1,0 +1,13 @@
+{
+	"name": "${dojoPackage}",
+	"description" : "${dojoPackage.description}",
+	"version" : "${dojoPackage.version}",
+	"keywords" :  ["JavaScript", "Dojo", "Toolkit", "DojoX"],
+	"dependencies":{
+		"dojo": "~${dojoVersion}",
+		"dijit": "~${dojoVersion}",
+		"dojox": "~${dojoVersion}"
+	},
+	"main": "./${dojoPackage}",
+	"dojoBuild": "dojoPackage.profile.js"
+}

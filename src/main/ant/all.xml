@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<project name="myproject" >
+	<!-- insert all the JS files except a few into the main dojo class. --> 
+	<target name="includeall">
+		<pathconvert property="js.files" dirsep="/" pathsep=",&#xA;"><!-- dirsep windows or linux? or both -->
+			<fileset dir="${search.folder}" includes="**/*.js">
+			<exclude name="**/nls/**"/>
+			<exclude name="**/${dojoPackage}.profile**"/>
+			</fileset>
+			<mapper>
+				<globmapper  from="${search.folder}/*.js" to="&quot;${dojoPackage}/*&quot;" handledirsep="yes"/>
+			</mapper>
+		</pathconvert>
+		<replaceregexp file="${filetoupdate}"
+					   match='(${dojoMainClass}"\s*:\s*\{\s*.*?\s*include\s*:\s*\[)'
+					   replace="\1 &#xA; ${js.files}" />
+	</target>
+	
+	<target name="unzip dojo">
+		<!-- Unzip the dojo source. As there is a root folder in the zip, strip it from the source. -->
+		<unzip dest="${shrink-dir}/dojo" src="${dojo_src_zip}" overwrite="false">
+	    		<patternset>
+				<exclude name="**/tests/**" />
+				<exclude name="**/tests/" />
+		    </patternset>
+			<cutdirsmapper dirs="1"/>
+		</unzip>
+	</target>
+	
+	<!-- launchs the dojo build-->
+	<target name="dojobuild">
+		<delete dir="${release-dir}/${dojoPackage}" />
+		<delete dir="${project.build.outputDirectory}/${webcontentdir}/${dojoPackage}" />
+		<delete dir="${project.build.outputDirectory}/${webcontentdir}" includes="${dojoMainClass}.* *.css"/>
+		<java
+			classname="org.mozilla.javascript.tools.shell.Main"
+			fork="true" maxmemory="512m"
+			failonerror="false"
+			classpath="${shrinksafe-dir}/js.jar;${closure-dir}/compiler.jar;${shrinksafe-dir}/shrinksafe.jar">
+			<arg value="${shrink-dir}/dojo/dojo/dojo.js" />
+			<arg value="baseUrl=${shrink-dir}/dojo/dojo" />
+			<arg value="load=build" />
+			<arg value="ignoreExitValue = true" />
+			<arg line="--profile '${shrink-dir}/profiles/profile.js'" />
+		</java>
+		
+		<!-- Deleting js.uncompressed.js and js.map files -->
+		<delete>
+			<fileset dir="${release-dir}/${dojoPackage}" includes="**/*.uncompressed.js **/*.js.map"/> 	
+		</delete>
+		
+		<!-- copy optimised files -->
+		<echo>Copy minified JS and CSS files</echo>
+		
+		<copy todir="${project.build.outputDirectory}/${webcontentdir}/${dojoPackage}" preservelastmodified="yes" verbose="no">
+			<fileset dir="${shrink-dir}/dojo/${dojoPackage}">
+				<!-- optional -->
+				<!-- if you only want to include the dojo layer in your plugin, make sure you have these files still present in the folder-->
+				<!-- <include name="**/nls/**"/>
+				<include name="**/package.json"/>
+				<include name="**/templates/**"/> -->
+				<exclude name="${dojoMainClass}.*"/>
+			</fileset>
+		</copy>
+		<copy todir="${project.build.outputDirectory}/${webcontentdir}" preservelastmodified="yes" verbose="no">
+			<fileset dir="${shrink-dir}/dojo/${dojoPackage}">
+				<include name="${dojoMainClass}.*"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- Removing the dojo package from the output directory -->
+	<echo>Deleting the dojo package from the output directory</echo>
+	<target name="deleteNotReqDojo" depends="dojobuild">
+		<delete>
+			<fileset dir="${shrink-dir}/dojo/${dojoPackage}"/>
+		</delete>
+	</target>
+	
+	<!-- Compression of the main JS and CSS file(s) -->
+	<target name="compressEachJgz" depends="deleteNotReqDojo">
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+		<foreach target="compressjgz" param="filetocompress">
+			<fileset dir="${release-dir}/${dojoPackage}" casesensitive="yes">
+				<include name="${dojoMainClass}.*"/>
+			</fileset>
+		</foreach>
+	</target>
+	
+	<target name="compressjgz">
+		<!-- Compressing the dojo layer and the main css class -->
+		<basename file='${filetocompress}' property='file.name'/>
+		<gzip  src='${release-dir}/${dojoPackage}/${file.name}'
+			   destfile='${project.build.outputDirectory}/${webcontentdir}/${file.name}.jgz'/>
+	</target>
+	
+</project>
