@@ -38,9 +38,15 @@ public class P8GetContentItemsRequestFilter extends PluginRequestFilter {
 		logger.logDebug(this, methodName, request, "contenu de config"+configurationString.toString());
 		
 		if (configurationString !=null && !configurationString.isEmpty()) {
-			final JSONObject configJSON = JSONObject.parse(configurationString);
-			final String desktops = (String) configJSON.get("desktops");
 			
+			final JSONObject configJSON = JSONObject.parse(configurationString);
+			
+			final String desktops = (String) configJSON.get("desktops");
+			//les autres entrees 
+			final String repositories = (String) configJSON.get("respositories");
+			final String substitutionPath = (String) configJSON.get("substitutionPath");
+			
+			/*
 			if("Demo".equals(repository) && desktops.equals(desktop) && "/".equals(docid)) {
 				//logger.logDebug(this, methodName, request,"traitements applicables !!!");
 				
@@ -48,6 +54,9 @@ public class P8GetContentItemsRequestFilter extends PluginRequestFilter {
 				PluginRequestUtil.setRequestParameter(request,"docid","Folder,{41732A1E-A113-4982-B145-161A0AFC25EF},{5023888A-0000-C512-9D2A-FEFAF83E599B}");
 			
 			}
+			*/
+			
+			logger.logDebug(this, methodName, request,"desktops : "+desktops+"repo : "+repositories+"substitutionPath : "+substitutionPath);
 			
 		}
 		

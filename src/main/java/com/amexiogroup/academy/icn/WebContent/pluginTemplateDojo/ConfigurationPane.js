@@ -17,8 +17,12 @@ define([
 				console.log("debut de la fonction callback");
 				const configJSON = JSON.parse(this.configurationString);
 				if(configJSON?.desktops){
-					console.log("recup de la saisie ")
-					this.desktops.set("value",configJSON.desktops);
+					
+					console.log("--- recup des saisies ---")
+					this.desktops.set("value",configJSON.desktops),
+					this.repositories.set("value",configJSON.repositories),
+					this.substitutionPath.set("value",configJSON.substitutionPath);
+					
 				}
             },
 
@@ -30,7 +34,10 @@ define([
             //evenement s'executant
             _onFieldChange : function(){
 				const configJSON = {
-					desktops: this.desktops.get("value")
+					desktops: this.desktops.get("value"),
+					repositories:this.repositories.get("value"),
+					substitutionPath:this.substitutionPath.get("value")
+					
 				};
 				this.configurationString = JSON.stringify(configJSON);
 				
