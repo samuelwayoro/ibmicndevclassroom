@@ -25,7 +25,6 @@ public class P8GetContentItemsRequestFilter extends PluginRequestFilter {
 		
 		String methodName = "filter";
 		PluginLogger logger = callbacks.getLogger(); 
-		
 		logger.logEntry(this, methodName, request);
 		
 		//
@@ -33,16 +32,27 @@ public class P8GetContentItemsRequestFilter extends PluginRequestFilter {
 		final String repository = request.getParameter("repositoryId");
 		final String docid = request.getParameter("docid");
 		
-		//
-		if("Demo".equals(repository) && "DEMO".equals(desktop) && "/".equals(docid)) {
-			//logger 
-			logger.logDebug(this, methodName, request,"traitements applicables !!!");
+		//recup de la config du plugin 
+		final String configurationString = callbacks.loadConfiguration();
+		//verif du contenu de la config saisie 
+		logger.logDebug(this, methodName, request, "contenu de config"+configurationString.toString());
+		
+		if (configurationString !=null && !configurationString.isEmpty()) {
+			final JSONObject configJSON = JSONObject.parse(configurationString);
+			final String desktops = (String) configJSON.get("desktops");
 			
-			//traitement a effectuer 
-			PluginRequestUtil.setRequestParameter(request,"docid","Folder,{41732A1E-A113-4982-B145-161A0AFC25EF},{5023888A-0000-C512-9D2A-FEFAF83E599B}");
-			
+			if("Demo".equals(repository) && desktops.equals(desktop) && "/".equals(docid)) {
+				//logger.logDebug(this, methodName, request,"traitements applicables !!!");
+				
+				//traitement a effectuer 
+				PluginRequestUtil.setRequestParameter(request,"docid","Folder,{41732A1E-A113-4982-B145-161A0AFC25EF},{5023888A-0000-C512-9D2A-FEFAF83E599B}");
+				
+				
+			}
 			
 		}
+		
+		
 		
 		return null;
 	}
