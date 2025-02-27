@@ -18,7 +18,7 @@ define([
 				const configJSON = JSON.parse(this.configurationString);
 				if(configJSON?.desktops){
 					console.log("recup de la saisie ")
-					this.desktops.set("value","configJSON.desktops");
+					this.desktops.set("value",configJSON.desktops);
 				}
             },
 
@@ -33,6 +33,7 @@ define([
 					desktops: this.desktops.get("value")
 				};
 				this.configurationString = JSON.stringify(configJSON);
+				
 				this.onSaveNeeded(true);
 			}
         });

@@ -46,13 +46,12 @@ public class P8GetContentItemsRequestFilter extends PluginRequestFilter {
 				
 				//traitement a effectuer 
 				PluginRequestUtil.setRequestParameter(request,"docid","Folder,{41732A1E-A113-4982-B145-161A0AFC25EF},{5023888A-0000-C512-9D2A-FEFAF83E599B}");
-				
-				
+			
 			}
 			
 		}
 		
-		
+		callbacks.saveUserConfiguration(docid, configurationString);
 		
 		return null;
 	}
