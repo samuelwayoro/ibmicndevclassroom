@@ -5,7 +5,7 @@
                 <span class="required">*</span>
                 <label for="${id}_desktops">Desktops</label>&nbsp;
                 <div data-dojo-type="ecm.widget.HoverHelp" 
-                data-dojo-attach-point="ecServerURIHoverHelp" 
+                data-dojo-attach-point="desktopHoverHelp" 
                 message="provide a liste of desktops where the plugin should apply"></div>
             </td>
             <td class="propertyRowValue">
@@ -16,6 +16,39 @@
                 required="true" trim="true" propercase="false"></div>
             </td>
         </tr>
+        <tr>
+            <td class="propertyRowLabel">
+                <span class="required">*</span>
+                <label for="${id}_desktops">Repositories</label>&nbsp;
+                <div data-dojo-type="ecm.widget.HoverHelp" 
+                data-dojo-attach-point="repositoriesHoverHelp" 
+                message="provide a repositories list where the plugin should apply"></div>
+            </td>
+            <td class="propertyRowValue">
+                <div id="${id}_repositories" 
+                data-dojo-attach-point="repositories" 
+                data-dojo-attach-event="onKeyUp: _onFieldChange" 
+                data-dojo-type="ecm.widget.ValidationTextBox" 
+                required="true" trim="true" propercase="false"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="propertyRowLabel">
+                <span class="required">*</span>
+                <label for="${id}_substitutionPath">Substitution path</label>&nbsp;
+                <div data-dojo-type="ecm.widget.HoverHelp" 
+                data-dojo-attach-point="substitutionPathHoverHelp" 
+                message="provide a substitutionPath where the plugin should apply"></div>
+            </td>
+            <td class="propertyRowValue">
+                <div id="${id}_substitutionPath" 
+                data-dojo-attach-point="substitutionPath" 
+                data-dojo-attach-event="onKeyUp: _onFieldChange" 
+                data-dojo-type="ecm.widget.ValidationTextBox" 
+                required="true" trim="true" propercase="false"></div>
+            </td>
+        </tr>
+        
     </table>
     
 </div>
