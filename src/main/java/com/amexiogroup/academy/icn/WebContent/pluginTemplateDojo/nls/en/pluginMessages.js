@@ -4,5 +4,7 @@ define({
      * package en cours
      * ***************************************************************************************************/
     key: "value",
-    myCustomLabel:"My custom text"
+    desktopLabel:"Desktop",
+    repositoryLabel:"Repository",
+    SubstitutionPathLabel:"Substitution path"
 });
