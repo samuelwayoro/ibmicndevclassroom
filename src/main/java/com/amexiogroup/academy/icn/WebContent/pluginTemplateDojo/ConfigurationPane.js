@@ -1,17 +1,26 @@
 define([
         "dojo/_base/declare",
+        "dojo/_base/lang",
+        "dojo/json",
         "dijit/_TemplatedMixin",
         "dijit/_WidgetsInTemplateMixin",
         "ecm/widget/admin/PluginConfigurationPane",
-        "dojo/text!./templates/ConfigurationPane.html"
-    ],
-    function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, PluginConfigurationPane, template) {
+        "dojo/text!./templates/ConfigurationPane.html",
+        "dojo/i18n!./nls/pluginMessages"],
+    function (declare,lang,JSON, _TemplatedMixin, _WidgetsInTemplateMixin, PluginConfigurationPane, template,nlsMessages) {
 
         return declare("PluginTemplateDojo.ConfigurationPane", [PluginConfigurationPane, _TemplatedMixin,
             _WidgetsInTemplateMixin], {
 
             templateString: template,
             widgetsInTemplate: true,
+            nlsMessages:null,
+            
+            constructor:function(){
+				this.inherited(arguments);
+				this.nlsMessages = nlsMessages;
+				this.templateString = lang.replace(this.templateString,this.nlsMessages);
+			},
 
             load: function (callback) {
 				console.log("debut de la fonction callback");

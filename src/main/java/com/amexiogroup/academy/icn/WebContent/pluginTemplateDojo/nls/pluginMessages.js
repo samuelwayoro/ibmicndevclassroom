@@ -4,7 +4,8 @@ define({
          * Here you specify the localisation keys and their values in a language considered to be the
          * default language.
          * ***************************************************************************************************/
-        key: "value"
+        key: "value",
+        myCustomLabel:"My custom text"
     }),
     /* ***************************************************************************************************
      * Specify here whether you have localisation elements for each language.

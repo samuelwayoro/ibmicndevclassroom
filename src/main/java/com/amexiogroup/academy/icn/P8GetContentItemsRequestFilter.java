@@ -35,32 +35,40 @@ public class P8GetContentItemsRequestFilter extends PluginRequestFilter {
 		//recup de la config du plugin 
 		final String configurationString = callbacks.loadConfiguration();
 		//verif du contenu de la config saisie 
+		logger.logDebug(this, methodName, request, "*** VERIF DES CONFIGS SAISIES ***");
 		logger.logDebug(this, methodName, request, "contenu de config"+configurationString.toString());
 		
 		if (configurationString !=null && !configurationString.isEmpty()) {
 			
 			final JSONObject configJSON = JSONObject.parse(configurationString);
+			logger.logDebug(this, methodName, request, "*** REPARTITION DANS DES VARIABLES String ***");
 			
 			final String desktops = (String) configJSON.get("desktops");
-			//les autres entrees 
-			final String repositories = (String) configJSON.get("respositories");
+			final String repositories = (String) configJSON.get("repositories");
 			final String substitutionPath = (String) configJSON.get("substitutionPath");
 			
-			/*
-			if("Demo".equals(repository) && desktops.equals(desktop) && "/".equals(docid)) {
-				//logger.logDebug(this, methodName, request,"traitements applicables !!!");
-				
-				//traitement a effectuer 
+			logger.logDebug(this, methodName, request, "*** VALEURS REPARTIES ***");
+			logger.logDebug(this, methodName, request,"[desktops    "+desktops+"   repo    "+repositories+"   substitutionPath    "+substitutionPath+"]");
+
+			
+			//new conditions form
+			if("/".equals(substitutionPath)) {
+				logger.logDebug(this, methodName, request," ---- ON RESTE SUR LA RACINE --- !!!");
+
+			}else if("Test Documents".equals(substitutionPath)) {
+				logger.logDebug(this, methodName, request," ---- DANS LE DOSSIER TEST --- !!!");
 				PluginRequestUtil.setRequestParameter(request,"docid","Folder,{41732A1E-A113-4982-B145-161A0AFC25EF},{5023888A-0000-C512-9D2A-FEFAF83E599B}");
-			
+			}else if("AmeXio".equals(substitutionPath)) {
+				logger.logDebug(this, methodName, request," ---- DANS LE DOSSIER AMEXIO --- !!!");
+				PluginRequestUtil.setRequestParameter(request,"docid","Folder,{41732A1E-A113-4982-B145-161A0AFC25EF},{9023888A-0000-CC1F-A318-C0CE9E1A58A2}");
 			}
-			*/
 			
-			logger.logDebug(this, methodName, request,"desktops : "+desktops+"repo : "+repositories+"substitutionPath : "+substitutionPath);
 			
+			//callbacks.saveUserConfiguration(docid, substitutionPath);
+		
 		}
 		
-		callbacks.saveUserConfiguration(docid, configurationString);
+		
 		
 		return null;
 	}
