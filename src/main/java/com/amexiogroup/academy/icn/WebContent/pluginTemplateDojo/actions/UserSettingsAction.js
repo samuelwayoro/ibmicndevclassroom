@@ -1,14 +1,11 @@
 define([
 	"dojo/_base/declare",
-	"dijit/_TemplatedMixin",
-	"dijit/_WidgetsInTemplateMixin",
-	"ecm/model/Action",
-	"dojo/text!./templates/UserSettingsAction.html"
+	"ecm/model/Action"
 ],
-	function(declare, _TemplatedMixin, _WidgetsInTemplateMixin, Action, template) {
+	function(declare, Action) {
 
-		return declare("PluginTemplateDojo.ConfigurationPane",
-			[Action, _TemplatedMixin, _WidgetsInTemplateMixin], {
+		return declare("pluginTemplateDojo.actions.UserSettingsAction",
+			[Action], {
 
 
 			canPerfomAction: function(repository, itemList, listType, teamspace, resultSet) {
@@ -26,17 +23,30 @@ define([
 			isGlobalVisible: function(resultSet, repository, repositoryTypes) {
 				return true;
 			},
-			
+
 			isVisible: function(repository, items, repositoryTypes, teamspace) {
 				return true;
 			},
-			
+
 			/**
 			 * methode s'executant suite au clic sur le btn avec le procédé suivant : 
 			 * 
 			 */
 			performAction: function(repository, itemList, callback, teamspace, resultSet, parameterMap) {
 
+				console.log("***Debut de la performAction method***")
+
+				//ouverture d'une pop up de saisie de preferences
+				const dialog = new ecm.widget.dialog.BaseDialog();
+
+				dialog.setTitle("User settings");
+				dialog.setIntroText("You can define your own personal setting");
+				dialog.setSize("400px", "400px");
+				dialog.setExpandable(false);
+
+				dialog.addButton(ecm.messages.save, dojo.hitch(this, this.onSave), false, false);
+
+				dialog.show();
 			}
 
 		});

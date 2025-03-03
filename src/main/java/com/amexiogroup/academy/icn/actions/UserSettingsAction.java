@@ -7,8 +7,7 @@ import com.ibm.ecm.extension.PluginAction;
 public class UserSettingsAction extends PluginAction {
 
 	@Override
-	public String getActionModelClass() { // Bizarre cette méthode n'est pas héritée de PluginAction
-		//return super.getActionModelClass();
+	public String getActionModelClass() { 
 		return "pluginTemplateDojo.actions.UserSettingsAction";
 	}
 
