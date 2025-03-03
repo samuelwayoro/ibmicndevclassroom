@@ -39,7 +39,7 @@ define([
 				//ouverture d'une pop up de saisie de preferences
 				const dialog = new ecm.widget.dialog.BaseDialog();
 
-				dialog.setTitle("User settings");
+				dialog.setTitle(ecm.messages.admin_configuration_parameters);//titre du pop-up
 				dialog.setIntroText("You can define your own personal setting");
 				dialog.setSize("400px", "400px");
 				dialog.setExpandable(false);
