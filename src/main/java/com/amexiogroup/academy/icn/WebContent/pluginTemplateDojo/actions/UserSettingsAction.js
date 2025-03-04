@@ -1,8 +1,10 @@
 define([
 	"dojo/_base/declare",
-	"ecm/model/Action"
-],
-	function(declare, Action) {
+	"dojo/_base/lang",
+	"ecm/model/Action",
+	"dojo/text!../templates/DialogueContent.html",
+	"dojo/i18n!../nls/pluginMessages"],
+	function(declare, lang, Action, dialogueContent, nlsMessages) {
 
 		return declare("pluginTemplateDojo.actions.UserSettingsAction",
 			[Action], {
@@ -34,19 +36,64 @@ define([
 			 */
 			performAction: function(repository, itemList, callback, teamspace, resultSet, parameterMap) {
 
-				console.log("***Debut de la performAction method***")
-
 				//ouverture d'une pop up de saisie de preferences
-				const dialog = new ecm.widget.dialog.BaseDialog();
+				const dialog = new ecm.widget.dialog.BaseDialog({
+					//passer des infos a la construction du pou up 
+					contentString: lang.replace(dialogueContent, nlsMessages)
+				});
 
-				dialog.setTitle(ecm.messages.admin_configuration_parameters);//titre du pop-up
-				dialog.setIntroText("You can define your own personal setting");
-				dialog.setSize("400px", "400px");
-				dialog.setExpandable(false);
+				//get pour recup si il ya une saisie prealable et l'afficher 
+				ecm.model.Request.invokePluginService(
+					"PluginFormation",//PluginFormation
+					"UserPreferencesService",
+					{
+						requestParams: {
+							mode: "get",
 
-				dialog.addButton(ecm.messages.save, dojo.hitch(this, this.onSave), false, false);
+						},
+						requestCompleteCallback: dojo.hitch(this, function(response) {
+							console.log(response);
 
-				dialog.show();
+
+							dialog.setTitle(ecm.messages.admin_configuration_parameters);//titre du pop-up
+							dialog.setIntroText("You can define your own personal setting");
+							dialog.setSize("400px", "400px");
+							dialog.setExpandable(false);
+							dialog.addButton(ecm.messages.save, dojo.hitch(this, this.onSave, dialog), false, false);
+							if(response?.substitutionFolder){
+								dialog.substitutionPath.set("value", response.substitutionFolder);
+							}
+
+							dialog.show();
+						}),
+						requestFailedCallback: function(error) {
+							console.log("Erreur lors de l'execution du service", error);
+						}
+					}
+				);
+
+			},
+			onSave: function(dialog) {
+				console.log("btn cliqué !!!")
+				//affichage des préférences pré enregistrés dans la pop up 
+				ecm.model.Request.invokePluginService(
+					"PluginFormation",//PluginFormation
+					"UserPreferencesService",
+					{
+						requestParams: {
+							mode: "set",
+							substitutionFolder: dialog.substitutionPath.get("value")
+						},
+						requestCompleteCallback: dojo.hitch(this, function(response) {
+							console.log(response);
+							dialog.substitutionPath.destroy();
+							dialog.destroy();// ou .hide()
+						}),
+						requestFailedCallback: function(error) {
+							console.log("Erreur lors de l'execution du service", error);
+						}
+					}
+				);
 			}
 
 		});

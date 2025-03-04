@@ -1,6 +1,7 @@
 package com.amexiogroup.academy.icn;
 
 import com.amexiogroup.academy.icn.actions.UserSettingsAction;
+import com.amexiogroup.academy.icn.services.UserPreferencesService;
 import com.amexiogroup.academy.icn.utils.Constantes;
 import com.amexiogroup.academy.icn.utils.LocalizationUtils;
 import com.ibm.ecm.extension.Plugin;
@@ -282,7 +283,8 @@ public class PluginFormation extends Plugin {
 	 */
 	@Override
 	public final PluginService[] getServices() {
-		return PluginFormation.EMPTY_PLUGIN_SERVICES_ARRAY;
+		// return PluginFormation.EMPTY_PLUGIN_SERVICES_ARRAY;
+		return new PluginService[] { new UserPreferencesService() };
 	}
 
 	/**
