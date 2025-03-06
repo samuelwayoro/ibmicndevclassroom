@@ -1,7 +1,12 @@
 package com.amexiogroup.academy.icn;
 
+import java.util.Objects;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.amexiogroup.academy.icn.utils.FileNetUtils;
 import com.ibm.ecm.extension.PluginLogger;
 import com.ibm.ecm.extension.PluginRequestFilter;
 import com.ibm.ecm.extension.PluginRequestUtil;
@@ -29,82 +34,75 @@ public class P8GetContentItemsRequestFilter extends PluginRequestFilter {
 
 		logger.logEntry(this, methodName, request);
 
+		String substitutionFolder = null;
+
 		final String desktop = request.getParameter("desktop");
 
 		final String repository = request.getParameter("repositoryId");
 
 		final String docid = request.getParameter("docid");
 
-		// Vérifier si l'utilisateur a défini une préférence personnelle
-
 		final String userPreferences = callbacks.loadUserConfiguration("userPreferences");
+		logger.logDebug(this, methodName, request,
+				"CONTENU DE UserPreferences APRES CHARGEMENT DE callbacks.loadUserConfiguration(userPreferences) : "
+						+ userPreferences.toString());
 
-		String substitutionFolder = null;
-
-		if (userPreferences != null && !userPreferences.isEmpty()) {
-
+		if (userPreferences != null && !userPreferences.isEmpty()) {// with UserPreferences
+			logger.logDebug(this, methodName, request, "PRESENCE DE UserPreferences");
 			JSONObject userPreferencesJSON = JSONObject.parse(userPreferences);
-
+			logger.logDebug(this, methodName, request,
+					"CONTENU DE userPreferencesJSON : " + userPreferencesJSON.toString());
 			substitutionFolder = (String) userPreferencesJSON.get("substitutionFolder");
-
-			logger.logDebug(this, methodName, request, "Dossier utilisateur trouvé : " + substitutionFolder);
+			logger.logDebug(this, methodName, request, "substitutionFolder RETENU : " + substitutionFolder);
 
 		}
 
-		// Si l'utilisateur n'a pas de préférence, utiliser la configuration
-		// administrateur
-
-		if (userPreferences == null || userPreferences.isEmpty()) {
-
+		if (substitutionFolder == null || substitutionFolder.isEmpty()) {// No userPreferences
+			logger.logDebug(this, methodName, request, "PAS DE UserPreferences");
 			final String configurationString = callbacks.loadConfiguration();
-
 			if (configurationString != null && !configurationString.isEmpty()) {
-
 				JSONObject configJSON = JSONObject.parse(configurationString);
-
-				substitutionFolder = (String) configJSON.get("substitutionPath");
-
 				logger.logDebug(this, methodName, request,
-						" Aucune préférence utilisateur, utilisation du dossier admin : " + substitutionFolder);
+						"CONTENU DE configurationString DONT substitutionPath a UTILISER: " + configurationString);
+				substitutionFolder = (String) configJSON.get("substitutionPath");
+				logger.logDebug(this, methodName, request, "substitutionFolder RETENU : " + substitutionFolder);
 
 			}
 
 		}
-
-		// Appliquer le dossier de substitution
 
 		if (substitutionFolder != null && !substitutionFolder.isEmpty()) {
 
-			logger.logDebug(this, methodName, request, " Redirection vers le dossier : " + substitutionFolder);
+			logger.logDebug(this, methodName, request, "Redirection vers le dossier : " + substitutionFolder);
 
 			PluginRequestUtil.setRequestParameter(request, "docid", substitutionFolder);
 
-			// new conditions form
+			logger.logDebug(this, methodName, request, "Valeur de substitutionFolder : " + substitutionFolder);
 
-			if ("/".equals(substitutionFolder)) {
+			FileNetUtils fileNetUtils = new FileNetUtils(callbacks, request);
 
-				logger.logDebug(this, methodName, request, " ---- ON RESTE SUR LA RACINE --- !!!");
+			logger.logDebug(this, methodName, "Chemin de redirection " + substitutionFolder + " trouvee ? : "
+					+ (fileNetUtils.getFolder(repository, substitutionFolder) != null));
 
-			} else if ("Test Documents".equals(substitutionFolder)) {
+			if (fileNetUtils.getFolder(repository, substitutionFolder) != null) {
+				if (("/Test Documents").equals(substitutionFolder)) {
+					logger.logDebug(this, methodName, "redirection vers le chemin /Test Documents");
+					PluginRequestUtil.setRequestParameter(request, "docid", "Test Documents");
+				} else if (("/AmeXio").equals(substitutionFolder)) {
+					logger.logDebug(this, methodName, "redirection vers le chemin /AmeXio");
+					PluginRequestUtil.setRequestParameter(request, "docid", "AmeXio");
+				} else if (("/SAM2").equals(substitutionFolder)) {
+					logger.logDebug(this, methodName, "redirection vers le chemin /SAM2");
+					PluginRequestUtil.setRequestParameter(request, "docid", "SAM2");
+				} else {
+					logger.logDebug(this, methodName, "redirection vers le chemin racine /");
 
-				logger.logDebug(this, methodName, request, " ---- DANS LE DOSSIER TEST --- !!!");
-
-				PluginRequestUtil.setRequestParameter(request, "docid",
-						"Folder,{41732A1E-A113-4982-B145-161A0AFC25EF},{5023888A-0000-C512-9D2A-FEFAF83E599B}");
-
-			} else if ("AmeXio".equals(substitutionFolder)) {
-
-				logger.logDebug(this, methodName, request, " ---- DANS LE DOSSIER AMEXIO --- !!!");
-
-				PluginRequestUtil.setRequestParameter(request, "docid",
-						"Folder,{41732A1E-A113-4982-B145-161A0AFC25EF},{9023888A-0000-CC1F-A318-C0CE9E1A58A2}");
-
+				}
+			} else {
+				logger.logDebug(this, methodName, request, "Dossier de substitution introuvable");
+				PluginRequestUtil.setRequestParameter(request, "docid", "/");
+				PluginRequestUtil.setRequestParameter(request, "substitutionFolderError", "true");
 			}
-
-		} else {
-
-			logger.logDebug(this, methodName, request,
-					"Aucun dossier de substitution trouvé. Affichage du dossier racine.");
 
 		}
 

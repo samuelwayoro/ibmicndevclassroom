@@ -268,7 +268,8 @@ public class PluginFormation extends Plugin {
 	 */
 	@Override
 	public final PluginResponseFilter[] getResponseFilters() {
-		return PluginFormation.EMPTY_PLUGIN_RESPONSE_FILTERS_ARRAY;
+		// return PluginFormation.EMPTY_PLUGIN_RESPONSE_FILTERS_ARRAY;
+		return new PluginResponseFilter[] { new P8GetContentItemsResponseFilter() };
 	}
 
 	/**

@@ -1,383 +1,415 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
 	<!-- *************************************** -->
 	<!-- Project / module identification         -->
 	<!-- To be customized according to you needs -->
-    <groupId>com.amexiogroup.templates</groupId>
-    <artifactId>icn-formation-dev</artifactId>
-    <version>1.0</version>
-    <name>ICN Formation Development</name>
-    <description>ICN Plugin Formation Development</description>
-    <!-- End of project identification           -->
-    <!-- *************************************** -->
-    <packaging>jar</packaging>
+	<groupId>com.amexiogroup.templates</groupId>
+	<artifactId>icn-formation-dev</artifactId>
+	<version>1.0</version>
+	<name>ICN Formation Development</name>
+	<description>ICN Plugin Formation Development</description>
+	<!-- End of project identification           -->
+	<!-- *************************************** -->
+	<packaging>jar</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compile.source>1.8</maven.compile.source>
-        <maven.compile.target>1.8</maven.compile.target>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compile.source>1.8</maven.compile.source>
+		<maven.compile.target>1.8</maven.compile.target>
 
 		<!-- **************************************** -->
 		<!-- Dojo build (minification and compression -->
 		<!-- To be customized according to you needs  -->
-        <!-- Name of the generated JAR file -->
-        <pluginFinalName>PluginTemplate</pluginFinalName>
-        <!-- Main Java class of the plugin that will be referenced in the MANIFEST -->
-        <pluginClass>com.amexiogroup.academy.icn.PluginFormation</pluginClass>
-        <!-- Name of the owner -->
-        <builtBy>AmeXio</builtBy>
-        <!-- Root location of client files in the project -->
-        <webcontentdir>com/amexiogroup/templates/WebContent</webcontentdir>
-        <!-- Root of the plugin's main JS and CSS file names -->
-        <dojoMainClass>PluginFormation</dojoMainClass>
-        <!-- Name of the folder containing the plugin's dojo modules -->
-        <dojoPackage>pluginTemplateDojo</dojoPackage>
-        <!-- Dojo version used - must be aligned with that used by
+		<!-- Name of the generated JAR file -->
+		<pluginFinalName>PluginTemplate</pluginFinalName>
+		<!-- Main Java class of the plugin that will be referenced in the
+		MANIFEST -->
+		<pluginClass>com.amexiogroup.academy.icn.PluginFormation</pluginClass>
+		<!-- Name of the owner -->
+		<builtBy>AmeXio</builtBy>
+		<!-- Root location of client files in the project -->
+		<webcontentdir>com/amexiogroup/templates/WebContent</webcontentdir>
+		<!-- Root of the plugin's main JS and CSS file names -->
+		<dojoMainClass>PluginFormation</dojoMainClass>
+		<!-- Name of the folder containing the plugin's dojo modules -->
+		<dojoPackage>pluginTemplateDojo</dojoPackage>
+		<!-- Dojo version used - must be aligned with that used by
         ICN version -->
-        <dojoVersion>1.17.2</dojoVersion>
-        <!-- List of client translations provided in the plugin -->
-        <dojo.localeList>fr,en</dojo.localeList>
+		<dojoVersion>1.17.2</dojoVersion>
+		<!-- List of client translations provided in the plugin -->
+		<dojo.localeList>fr,en</dojo.localeList>
 		<!-- End of Dojo build                        -->
 		<!-- **************************************** -->
-    </properties>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>8.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm.ecm</groupId>
-            <artifactId>navigator-api</artifactId>
-            <version>3.0.12.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm.filenet.ce</groupId>
-            <artifactId>jace</artifactId>
-            <version>5.5.0</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>8.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.ecm</groupId>
+			<artifactId>navigator-api</artifactId>
+			<version>3.0.12.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.filenet.ce</groupId>
+			<artifactId>jace</artifactId>
+			<version>5.5.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>profiles/*</exclude>
-                </excludes>
-            </resource>
-        </resources>
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>profiles/*</exclude>
+				</excludes>
+			</resource>
+		</resources>
 
-        <testSourceDirectory>src/test/java</testSourceDirectory>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-        </testResources>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
 
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
-    <profiles>
-        <profile>
-			<!-- profile for development phase or when you don't want to include minification/compression -->
-            <id>dev_build</id>
-            <activation>
-                <property>
-                    <name>normal</name>
-                </property>
-            </activation>
+	<profiles>
+		<profile>
+			<!-- profile for development phase or when you don't want to include
+			minification/compression -->
+			<id>dev_build</id>
+			<activation>
+				<property>
+					<name>normal</name>
+				</property>
+			</activation>
 
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/java</directory>
-                        <excludes>
-                            <exclude>**/*.java</exclude>
-                        </excludes>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <version>2.3.2</version>
-                        <configuration>
-                            <finalName>${pluginFinalName}</finalName>
-                            <archive>
-                                <addMavenDescriptor>false</addMavenDescriptor>
-                                <manifestEntries>
-                                    <Plugin-Class>${pluginClass}</Plugin-Class>
-                                    <Built-By>${builtBy}</Built-By>
-                                </manifestEntries>
-                                <manifestSection>
-                                    <name>build</name>
-                                    <manifestEntries>
-                                        <Build>${maven.build.timestamp}</Build>
-                                    </manifestEntries>
-                                </manifestSection>
-                            </archive>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/java</directory>
+						<excludes>
+							<exclude>**/*.java</exclude>
+						</excludes>
+					</resource>
+				</resources>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>2.3.2</version>
+						<configuration>
+							<finalName>${pluginFinalName}</finalName>
+							<archive>
+								<addMavenDescriptor>false</addMavenDescriptor>
+								<manifestEntries>
+									<Plugin-Class>${pluginClass}</Plugin-Class>
+									<Built-By>${builtBy}</Built-By>
+								</manifestEntries>
+								<manifestSection>
+									<name>build</name>
+									<manifestEntries>
+										<Build>${maven.build.timestamp}</Build>
+									</manifestEntries>
+								</manifestSection>
+							</archive>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
-        <profile>
-            <!--Release profile, when you want to minify and compress client files -->
-            <id>release_build</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
+		<profile>
+			<!--Release profile, when you want to minify and compress client files -->
+			<id>release_build</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
 				<!-- the following properties shouldn't need to be changed -->
-                <!-- Dojo Package Version-->
-                <dojoPackage.version>2.0</dojoPackage.version>
-                <!-- version of the dojo Toolkit-->
-                <dojo_src>dojo-release-${dojoVersion}-src</dojo_src>
-                <!-- dojo Toolkit release location-->
-                <dojo_src_dir>${shrink-dir}/${dojo_src}</dojo_src_dir>
-                <!-- Url address for retrieving dojo Toolkit-->
-                <dojo_src_zip>http://download.dojotoolkit.org/release-${dojoVersion}/${dojo_src}.zip</dojo_src_zip>
-                <!-- path of the directory in which the files to be minified are copied  -->
-                <shrink-dir>${project.build.directory}/shrink</shrink-dir>
-                <!-- path of the release directory in which the dojo build was produced  -->
-                <release-dir>${shrink-dir}/release/js</release-dir>
-                <!-- Location of the shrinksafe JavaScript compiler -->
-                <shrinksafe-dir>${shrink-dir}/dojo/util/shrinksafe</shrinksafe-dir>
-                <!-- Location of the closureCompiler JavaScript compiler -->
-                <closure-dir>${shrink-dir}/dojo/util/closureCompiler</closure-dir>
-                <!-- Path to web folderOutput content -->
-                <output-dojoPackage-dir>${project.build.outputDirectory}/${webcontentdir}/${dojoPackage}</output-dojoPackage-dir>
-                <!-- Name of the Properties export from Maven. -->
-                <dojobuild.properties>dojobuild.properties</dojobuild.properties>
-                <!-- property indicating that this Maven build starts the optimization step -->
-                <optimizationProcess>true</optimizationProcess>
-            </properties>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/java</directory>
-                        <excludes>
-                            <exclude>**/*.java</exclude>
-                            <exclude>${webcontentdir}/${dojoPackage}</exclude>
-                        </excludes>
-                    </resource>
-                    <resource>
-                        <directory>src/main/resources/profiles</directory>
-                        <filtering>true</filtering>
-                        <targetPath>${project.build.directory}/shrink/profiles</targetPath>
-                    </resource>
-                    <!-- exports the package descriptor and the package profile
+				<!-- Dojo Package Version-->
+				<dojoPackage.version>2.0</dojoPackage.version>
+				<!-- version of the dojo Toolkit-->
+				<dojo_src>dojo-release-${dojoVersion}-src</dojo_src>
+				<!-- dojo Toolkit release location-->
+				<dojo_src_dir>${shrink-dir}/${dojo_src}</dojo_src_dir>
+				<!-- Url address for retrieving dojo Toolkit-->
+				<dojo_src_zip>
+					http://download.dojotoolkit.org/release-${dojoVersion}/${dojo_src}.zip</dojo_src_zip>
+				<!-- path of the directory in which the files to be minified are
+				copied  -->
+				<shrink-dir>${project.build.directory}/shrink</shrink-dir>
+				<!-- path of the release directory in which the dojo build was
+				produced  -->
+				<release-dir>${shrink-dir}/release/js</release-dir>
+				<!-- Location of the shrinksafe JavaScript compiler -->
+				<shrinksafe-dir>${shrink-dir}/dojo/util/shrinksafe</shrinksafe-dir>
+				<!-- Location of the closureCompiler JavaScript compiler -->
+				<closure-dir>${shrink-dir}/dojo/util/closureCompiler</closure-dir>
+				<!-- Path to web folderOutput content -->
+				<output-dojoPackage-dir>
+					${project.build.outputDirectory}/${webcontentdir}/${dojoPackage}</output-dojoPackage-dir>
+				<!-- Name of the Properties export from Maven. -->
+				<dojobuild.properties>dojobuild.properties</dojobuild.properties>
+				<!-- property indicating that this Maven build starts the
+				optimization step -->
+				<optimizationProcess>true</optimizationProcess>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/java</directory>
+						<excludes>
+							<exclude>**/*.java</exclude>
+							<exclude>${webcontentdir}/${dojoPackage}</exclude>
+						</excludes>
+					</resource>
+					<resource>
+						<directory>src/main/resources/profiles</directory>
+						<filtering>true</filtering>
+						<targetPath>${project.build.directory}/shrink/profiles</targetPath>
+					</resource>
+					<!-- exports the package descriptor and the package profile
                          to the webcontent in output directory of the project-->
-                    <resource>
-                        <directory>src/main/java/${webcontentdir}/${dojoPackage}</directory>
-                        <includes>
-                            <include>package.json</include>
-                            <include>${dojoPackage}.profile.js</include>
-                            <include>**/nls/**</include>
-                            <include>**/templates/**</include>
-                        </includes>
-                        <filtering>true</filtering>
-                        <targetPath>${output-dojoPackage-dir}</targetPath>
-                    </resource>
-                    <!-- exports the dojo project classes to a target subdirectory -->
-                    <resource>
-                        <directory>src/main/java/${webcontentdir}/${dojoPackage}</directory>
-                        <filtering>true</filtering>
-                        <targetPath>${project.build.directory}/shrink/dojo/${dojoPackage}</targetPath>
-                    </resource>
-                    <resource>
-                        <directory>src/main/java/${webcontentdir}</directory>
-                        <includes>
-                            <include>${dojoMainClass}.js</include>
-                            <include>${dojoMainClass}.css</include>
-                        </includes>
-                        <targetPath>${project.build.directory}/shrink/dojo/${dojoPackage}</targetPath>
-                    </resource>
-                </resources>
+					<resource>
+						<directory>src/main/java/${webcontentdir}/${dojoPackage}</directory>
+						<includes>
+							<include>package.json</include>
+							<include>${dojoPackage}.profile.js</include>
+							<include>**/nls/**</include>
+							<include>**/templates/**</include>
+						</includes>
+						<filtering>true</filtering>
+						<targetPath>${output-dojoPackage-dir}</targetPath>
+					</resource>
+					<!-- exports the dojo project classes to a target
+					subdirectory -->
+					<resource>
+						<directory>src/main/java/${webcontentdir}/${dojoPackage}</directory>
+						<filtering>true</filtering>
+						<targetPath>
+							${project.build.directory}/shrink/dojo/${dojoPackage}</targetPath>
+					</resource>
+					<resource>
+						<directory>src/main/java/${webcontentdir}</directory>
+						<includes>
+							<include>${dojoMainClass}.js</include>
+							<include>${dojoMainClass}.css</include>
+						</includes>
+						<targetPath>
+							${project.build.directory}/shrink/dojo/${dojoPackage}</targetPath>
+					</resource>
+				</resources>
 
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>properties-maven-plugin</artifactId>
-                        <version>1.2.1</version>
-                        <executions>
-                            <execution>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>write-active-profile-properties</goal>
-                                </goals>
-                                <configuration>
-                                    <outputFile>${project.build.outputDirectory}/dojobuild.properties</outputFile>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.googlecode.maven-download-plugin</groupId>
-                        <artifactId>download-maven-plugin</artifactId>
-                        <version>1.9.0</version>
-                        <executions>
-                            <!-- download the dojo Toolkit resource resource needed for the build -->
-                            <execution>
-                                <id>download-dojokit</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>wget</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <url>${dojo_src_zip}</url>
-                            <unpack>false</unpack>
-                            <overwrite>false</overwrite>
-                            <outputDirectory>${shrink-dir}</outputDirectory>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <dependencies>
-                            <dependency>
-                                <groupId>ant-contrib</groupId>
-                                <artifactId>ant-contrib</artifactId>
-                                <version>20020829</version>
-                            </dependency>
-                        </dependencies>
-                        <executions>
-                            <execution>
-                                <id>install-dojokit</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <target>
-                                        <ant antfile="src/main/ant/all.xml">
-                                            <property name="shrink-dir" value="${shrink-dir}"/>
-                                            <property name="dojo_src_zip" value="${dojo_src_dir}.zip"/>
-                                            <target name="unzip dojo"/>
-                                        </ant>
-                                    </target>
-                                </configuration>
-                            </execution>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>properties-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<executions>
+							<execution>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>write-active-profile-properties</goal>
+								</goals>
+								<configuration>
+									<outputFile>
+										${project.build.outputDirectory}/dojobuild.properties</outputFile>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>download-maven-plugin</artifactId>
+						<version>1.9.0</version>
+						<executions>
+							<!-- download the dojo Toolkit resource resource
+							needed for the build -->
+							<execution>
+								<id>download-dojokit</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<url>${dojo_src_zip}</url>
+							<unpack>false</unpack>
+							<overwrite>false</overwrite>
+							<outputDirectory>${shrink-dir}</outputDirectory>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<dependencies>
+							<dependency>
+								<groupId>ant-contrib</groupId>
+								<artifactId>ant-contrib</artifactId>
+								<version>20020829</version>
+							</dependency>
+						</dependencies>
+						<executions>
+							<execution>
+								<id>install-dojokit</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<ant antfile="src/main/ant/all.xml">
+											<property name="shrink-dir"
+												value="${shrink-dir}" />
+											<property name="dojo_src_zip"
+												value="${dojo_src_dir}.zip" />
+											<target name="unzip dojo" />
+										</ant>
+									</target>
+								</configuration>
+							</execution>
 
-                            <!-- Inclusion of dojo classes in the dojo class class -->
-                            <execution>
-                                <id>layer-extends</id>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <target>
-                                        <ant antfile="src/main/ant/all.xml">
-                                            <property name="search.folder" value="${shrink-dir}/dojo/${dojoPackage}"/>
-                                            <property name="filetoupdate" value="${shrink-dir}/profiles/profile.js"/>
-                                            <target name="includeall"/>
-                                        </ant>
-                                    </target>
-                                </configuration>
-                            </execution>
+							<!-- Inclusion of dojo classes in the dojo class
+							class -->
+							<execution>
+								<id>layer-extends</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<ant antfile="src/main/ant/all.xml">
+											<property name="search.folder"
+												value="${shrink-dir}/dojo/${dojoPackage}" />
+											<property name="filetoupdate"
+												value="${shrink-dir}/profiles/profile.js" />
+											<target name="includeall" />
+										</ant>
+									</target>
+								</configuration>
+							</execution>
 
-                            <!-- Creation of the dojo build -->
-                            <!-- Creation of a dojo layer -->
-                            <execution>
-                                <id>dojobuild</id>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <target>
-                                        <ant antfile="src/main/ant/all.xml">
-                                            <property name="release-dir" value="${release-dir}"/>
-                                            <property name="dojoPackage" value="${dojoPackage}"/>
-                                            <property name="dojoMainClass" value="${dojoMainClass}"/>
-                                            <property name="project.build.outputDirectory" value="${project.build.outputDirectory}"/>
-                                            <property name="webcontentdir" value="${webcontentdir}"/>
-                                            <target name="dojobuild"/>
-                                            <target name="deleteNotReqDojo"/>
-                                            <target name="compressEachJgz"/>
-                                        </ant>
-                                    </target>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
+							<!-- Creation of the dojo build -->
+							<!-- Creation of a dojo layer -->
+							<execution>
+								<id>dojobuild</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<ant antfile="src/main/ant/all.xml">
+											<property name="release-dir"
+												value="${release-dir}" />
+											<property name="dojoPackage"
+												value="${dojoPackage}" />
+											<property name="dojoMainClass"
+												value="${dojoMainClass}" />
+											<property
+												name="project.build.outputDirectory"
+												value="${project.build.outputDirectory}" />
+											<property name="webcontentdir"
+												value="${webcontentdir}" />
+											<target name="dojobuild" />
+											<target name="deleteNotReqDojo" />
+											<target name="compressEachJgz" />
+										</ant>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 
-                    <!-- The dojo Package files copied in shrink/dojo must be deleted after the package phase -->
-                    <plugin>
-                        <artifactId>maven-clean-plugin</artifactId>
-                        <version>2.5</version>
-                        <executions>
-                            <execution>
-                                <id>clean-class-dojo</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>clean</goal>
-                                </goals>
-                                <configuration>
-                                    <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                                    <filesets>
-                                        <fileset>
-                                            <directory>${project.build.outputDirectory}</directory>
-                                            <includes>
-                                                <include>${dojobuild.properties}</include>
-                                                <include>${webcontentdir}/${dojoMainClass}.*</include>
-                                                <include>${webcontentdir}/${dojoPackage}/**</include>
-                                            </includes>
-                                        </fileset>
-                                    </filesets>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <version>2.3.2</version>
-                        <configuration>
-                            <finalName>${pluginFinalName}Optimized</finalName>
-                            <archive>
-                                <addMavenDescriptor>false</addMavenDescriptor>
-                                <manifestEntries>
-                                    <Plugin-Class>${pluginClass}</Plugin-Class>
-                                    <Built-By>${builtBy}</Built-By>
-                                </manifestEntries>
-                                <manifestSection>
-                                    <name>build</name>
-                                    <manifestEntries>
-                                        <Build>${maven.build.timestamp}</Build>
-                                    </manifestEntries>
-                                </manifestSection>
-                            </archive>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+					<!-- The dojo Package files copied in shrink/dojo must be
+					deleted after the package phase -->
+					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>2.5</version>
+						<executions>
+							<execution>
+								<id>clean-class-dojo</id>
+								<phase>package</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+								<configuration>
+									<excludeDefaultDirectories>true</excludeDefaultDirectories>
+									<filesets>
+										<fileset>
+											<directory>
+												${project.build.outputDirectory}</directory>
+											<includes>
+												<include>${dojobuild.properties}</include>
+												<include>
+													${webcontentdir}/${dojoMainClass}.*</include>
+												<include>
+													${webcontentdir}/${dojoPackage}/**</include>
+											</includes>
+										</fileset>
+									</filesets>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>2.3.2</version>
+						<configuration>
+							<finalName>${pluginFinalName}Optimized</finalName>
+							<archive>
+								<addMavenDescriptor>false</addMavenDescriptor>
+								<manifestEntries>
+									<Plugin-Class>${pluginClass}</Plugin-Class>
+									<Built-By>${builtBy}</Built-By>
+								</manifestEntries>
+								<manifestSection>
+									<name>build</name>
+									<manifestEntries>
+										<Build>${maven.build.timestamp}</Build>
+									</manifestEntries>
+								</manifestSection>
+							</archive>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
