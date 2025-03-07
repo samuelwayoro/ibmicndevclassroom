@@ -8,7 +8,8 @@ define({
 		desktopLabel: "Desktop",
 		repositoryLabel: "Repository",
 		SubstitutionPathLabel: "Substitution path",
-		errorDialogueTitle:"errorDialogueTitle"
+		myMessage: "You can define your own personal setting",
+		errorDialogueTitle: "errorDialogueTitle"
 	}),
 	/* ***************************************************************************************************
 	 * Specify here whether you have localisation elements for each language.

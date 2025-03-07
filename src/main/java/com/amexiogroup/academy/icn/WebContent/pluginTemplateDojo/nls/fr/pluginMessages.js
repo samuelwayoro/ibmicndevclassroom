@@ -7,5 +7,6 @@ define({
 	desktopLabel: "Bureau",
 	repositoryLabel: "Repertoire",
 	SubstitutionPathLabel: "Chemin de substitution",
-	errorDialogueTitle:"Erreur de configuration"
+	myMessage: "Vous pouvez définir votre propre paramètre personnel",
+	errorDialogueTitle: "Erreur de configuration"
 });

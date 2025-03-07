@@ -20,11 +20,13 @@ define([
 ],
 	function(declare, _LaunchBarPane, template, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar) {
 		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane], {
-			
+
 			templateString: template,
 			widgetInTemplate: true,
 
 			postCreate: function() {
+				//faire le replace ici ...
+				//this.templateString = lang.replace(this.templateString, this.nlsMessages);
 				console.debug("dans postCreate");
 				this.recentDocuments.setContentListModules(this._getContentListModules());
 				this.recentDocuments.setGridExtensionModules(this._getGridExtensionModules());
