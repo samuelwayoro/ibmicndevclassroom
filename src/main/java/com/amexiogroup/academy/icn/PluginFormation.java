@@ -1,6 +1,7 @@
 package com.amexiogroup.academy.icn;
 
 import com.amexiogroup.academy.icn.actions.UserSettingsAction;
+import com.amexiogroup.academy.icn.features.RecentDocumentsFeature;
 import com.amexiogroup.academy.icn.services.UserPreferencesService;
 import com.amexiogroup.academy.icn.utils.Constantes;
 import com.amexiogroup.academy.icn.utils.LocalizationUtils;
@@ -367,7 +368,7 @@ public class PluginFormation extends Plugin {
 	 */
 	@Override
 	public final PluginFeature[] getFeatures() {
-		return PluginFormation.EMPTY_PLUGIN_FEATURES_ARRAY;
+		return new PluginFeature[] { new RecentDocumentsFeature() };
 	}
 
 	/**

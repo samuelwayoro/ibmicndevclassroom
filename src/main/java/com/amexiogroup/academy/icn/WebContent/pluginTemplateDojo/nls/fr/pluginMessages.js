@@ -6,5 +6,6 @@ define({
 	key: "valeur",
 	desktopLabel: "Bureau",
 	repositoryLabel: "Repertoire",
-	SubstitutionPathLabel: "Chemin de substitution"
+	SubstitutionPathLabel: "Chemin de substitution",
+	errorDialogueTitle:"Erreur de configuration"
 });
