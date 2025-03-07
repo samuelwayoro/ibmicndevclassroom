@@ -56,7 +56,7 @@ define([
 
 
 							dialog.setTitle(ecm.messages.admin_configuration_parameters);//titre du pop-up
-							//dialog.setIntroText("You can define your own personal setting");
+							//dialog.setIntroText("You can define your own personal setting");//utilisation du text localisé (myMessage)
 							dialog.setSize("400px", "400px");
 							dialog.setExpandable(false);
 							dialog.addButton(ecm.messages.save, dojo.hitch(this, this.onSave, dialog), false, false);

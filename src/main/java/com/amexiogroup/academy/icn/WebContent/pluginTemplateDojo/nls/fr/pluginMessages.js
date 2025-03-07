@@ -8,5 +8,7 @@ define({
 	repositoryLabel: "Repertoire",
 	SubstitutionPathLabel: "Chemin de substitution",
 	myMessage: "Vous pouvez définir votre propre paramètre personnel",
-	errorDialogueTitle: "Erreur de configuration"
+	errorDialogueTitle: "Erreur de configuration",
+	myFeatureTitle: "document récement ajoutés",
+
 });

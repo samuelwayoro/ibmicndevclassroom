@@ -1,7 +1,10 @@
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"ecm/widget/layout/_LaunchBarPane",
+	"dijit/_TemplatedMixin",
 	"dojo/text!./templates/RecentDocumentsFeature.html",
+	"dojo/i18n!../nls/pluginMessages",
 
 	//Modules du comportement de contentList
 	"ecm/widget/listView/gridModules/RowContextMenu",
@@ -13,20 +16,23 @@ define([
 	"ecm/widget/listView/modules/DocInfo",
 	"ecm/widget/listView/modules/Bar",
 	"ecm/widget/listView/modules/Toolbar",
-
-
-
-
 ],
-	function(declare, _LaunchBarPane, template, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar) {
-		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane], {
+	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar) {
+		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane, _TemplatedMixin], {
 
 			templateString: template,
-			widgetInTemplate: true,
+			nlsMessages: null,
+
+			constructor: function() {
+				console.debug("dans le contructor");
+				this.nlsMessages = nlsMessages;
+				this.templateString = lang.replace(this.templateString, this.nlsMessages);
+
+				console.debug("fin du constructor");
+
+			},
 
 			postCreate: function() {
-				//faire le replace ici ...
-				//this.templateString = lang.replace(this.templateString, this.nlsMessages);
 				console.debug("dans postCreate");
 				this.recentDocuments.setContentListModules(this._getContentListModules());
 				this.recentDocuments.setGridExtensionModules(this._getGridExtensionModules());

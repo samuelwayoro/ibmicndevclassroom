@@ -8,5 +8,7 @@ define({
 	repositoryLabel: "Repository",
 	SubstitutionPathLabel: "Substitution path",
 	myMessage: "You can define your own personal setting",
-	errorDialogueTitle: "Configuration error"
+	errorDialogueTitle: "Configuration error",
+	myFeatureTitle: "recently added documents",
+
 });

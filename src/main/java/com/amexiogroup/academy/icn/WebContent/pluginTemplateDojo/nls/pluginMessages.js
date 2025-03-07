@@ -9,7 +9,9 @@ define({
 		repositoryLabel: "Repository",
 		SubstitutionPathLabel: "Substitution path",
 		myMessage: "You can define your own personal setting",
-		errorDialogueTitle: "errorDialogueTitle"
+		errorDialogueTitle: "errorDialogueTitle",
+		myFeatureTitle: "recently added documents",
+
 	}),
 	/* ***************************************************************************************************
 	 * Specify here whether you have localisation elements for each language.
