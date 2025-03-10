@@ -16,12 +16,19 @@ define([
 	"ecm/widget/listView/modules/DocInfo",
 	"ecm/widget/listView/modules/Bar",
 	"ecm/widget/listView/modules/Toolbar",
+	"dijit/form/Button",//import dojo permettant l'affichage du btn de config
+
 ],
-	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar) {
+	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar, Button) {
 		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane, _TemplatedMixin], {
 
 			templateString: template,
 			nlsMessages: null,
+
+			//rattachement de la configuration du feature
+			getConfigurationDijit: function() {
+				return new RecentDocumentsFeatureConfiguration();
+			},
 
 			constructor: function() {
 				console.debug("dans le contructor");
@@ -36,6 +43,9 @@ define([
 				console.debug("dans postCreate");
 				this.recentDocuments.setContentListModules(this._getContentListModules());
 				this.recentDocuments.setGridExtensionModules(this._getGridExtensionModules());
+				this._createConfigButton();//initialisation du btn
+				console.debug("fin du postCreate")
+
 			},
 
 			loadContent: function() {
@@ -75,9 +85,12 @@ define([
 
 				this.needReset = false;
 				this.isLoaded = true;
+				console.debug("fin du loadContent");
 			},
 
 			_getContentListModules: function() {
+				console.debug("dans _getContentListModules");
+
 				const modules = [];
 				modules.push({
 					moduleClass: DocInfo,
@@ -90,6 +103,8 @@ define([
 				//mon content list vas m'afficher une vue detail et une vue magasine
 				viewModules.push(ViewDetail);
 				viewModules.push(ViewMagazine);
+
+
 				modules.push({
 					moduleClass: Bar,
 					top: [[[
@@ -111,16 +126,33 @@ define([
 					]]]
 				});
 
+				console.debug("fin du _getContentListModules");
 
 				return modules;
 
 			},
 
 			_getGridExtensionModules: function() {
+				console.debug("debut du  _getGridExtensionModules");
+
 				const modules = [];
 				modules.push(RowContextMenu);
 				modules.push(DndFromDesktopAddDoc);
+				console.debug("fin du  _getGridExtensionModules");
 				return modules;
+			},
+
+			//methode d'affichage du bouton 
+			_createConfigButton: function() {
+
+				var button = new Button({
+					label: "Configurer",
+					onClick: function() {
+						console.debug("boutton cliqué")
+					}
+				});
+				button.placeAt(this.domNode, "first");//POSITION A MODIFIER DANS UN LaunchBarContainer...
+
 			},
 		});
 	});

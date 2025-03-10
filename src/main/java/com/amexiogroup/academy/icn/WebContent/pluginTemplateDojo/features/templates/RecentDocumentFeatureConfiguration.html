@@ -1,2 +1,21 @@
 <div>
+    <table class="propertyTable" role="presentation">
+        <tr>
+            <td class="propertyRowLabel">
+                <span class="required">*</span>
+                <label for="${id}_nombreJours">Nombre de jours fixe</label>&nbsp;
+                <div data-dojo-type="ecm.widget.HoverHelp" 
+                data-dojo-attach-point="desktopHoverHelp" 
+                message="renseigner le nombre de jours fixe"></div>
+            </td>
+            <td class="propertyRowValue">
+                <div id="${id}_nombreJours" 
+                data-dojo-attach-point="nombreJours" 
+                data-dojo-attach-event="onKeyUp: _onFieldChange" 
+                data-dojo-type="ecm.widget.NumberTextBox" 
+                required="true" trim="true" data-dojo-props="constraints:{min:1,max:30,places:0}" ></div>
+            </td>
+        </tr>
+    </table>
+    
 </div>
