@@ -4,6 +4,7 @@ define([
 	"ecm/widget/layout/_LaunchBarPane",
 	"dijit/_TemplatedMixin",
 	"dojo/text!./templates/RecentDocumentsFeature.html",
+	"./RecentDocumentsFeatureConfiguration",
 	"dojo/i18n!../nls/pluginMessages",
 
 	//Modules du comportement de contentList
@@ -19,7 +20,7 @@ define([
 	"dijit/form/Button",//import dojo permettant l'affichage du btn de config
 
 ],
-	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar, Button) {
+	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template,RecentDocumentsFeatureConfiguration, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar, Button) {
 		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane, _TemplatedMixin], {
 
 			templateString: template,
@@ -147,12 +148,17 @@ define([
 
 				var button = new Button({
 					label: "Configurer",
-					onClick: function() {
-						console.debug("boutton cliqué")
-					}
+					onClick:lang.hitch(this,function(){
+						this._openConfigPopUp();
+					})
 				});
 				button.placeAt(this.domNode, "first");//POSITION A MODIFIER DANS UN LaunchBarContainer...
 
+			},
+			
+			_openConfigPopUp:function(){
+				var configDialog = new RecentDocumentsFeatureConfiguration();
+				configDialog.show();
 			},
 		});
 	});
