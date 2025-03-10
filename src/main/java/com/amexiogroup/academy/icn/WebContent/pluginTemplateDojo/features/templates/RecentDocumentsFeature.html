@@ -1,5 +1,9 @@
 <div>
-	<h2>{myFeatureTitle}</h2>
+	<div style="display: flex; align-items: center; gap: 10px;">
+		<h2>{myFeatureTitle}</h2>
+		<button data-dojo-type="dijit.form.Button"
+			data-dojo-attach-point="configButton">Configurer</button>
+	</div>
 	<div id="recentDocuments" data-dojo-attach-point="recentDocuments"
 		data-dojo-type="ecm.widget.listView.ContentList"
 		emptyMessage="Aucun document récent à afficher"></div>

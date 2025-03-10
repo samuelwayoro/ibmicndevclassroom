@@ -20,33 +20,40 @@ define([
 	"dijit/form/Button",//import dojo permettant l'affichage du btn de config
 
 ],
-	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template,RecentDocumentsFeatureConfiguration, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar, Button) {
+	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template, RecentDocumentsFeatureConfiguration, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar, Button) {
 		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane, _TemplatedMixin], {
 
 			templateString: template,
 			nlsMessages: null,
 
-			//rattachement de la configuration du feature
+			//rattachement de la configuration du feature (A MIEUX COMPRENDRE)
+			/*
 			getConfigurationDijit: function() {
 				return new RecentDocumentsFeatureConfiguration();
 			},
+			*/
 
 			constructor: function() {
 				console.debug("dans le contructor");
 				this.nlsMessages = nlsMessages;
 				this.templateString = lang.replace(this.templateString, this.nlsMessages);
-
 				console.debug("fin du constructor");
 
 			},
+
+
 
 			postCreate: function() {
 				console.debug("dans postCreate");
 				this.recentDocuments.setContentListModules(this._getContentListModules());
 				this.recentDocuments.setGridExtensionModules(this._getGridExtensionModules());
-				this._createConfigButton();//initialisation du btn
+				this._setupEvents();//pour setter le click sur le btn ....
 				console.debug("fin du postCreate")
 
+			},
+
+			_setupEvents: function() {
+				this.configButton.on("click", lang.hitch(this, this._openConfigPopUp));
 			},
 
 			loadContent: function() {
@@ -143,20 +150,9 @@ define([
 				return modules;
 			},
 
-			//methode d'affichage du bouton 
-			_createConfigButton: function() {
-
-				var button = new Button({
-					label: "Configurer",
-					onClick:lang.hitch(this,function(){
-						this._openConfigPopUp();
-					})
-				});
-				button.placeAt(this.domNode, "first");//POSITION A MODIFIER DANS UN LaunchBarContainer...
-
-			},
 			
-			_openConfigPopUp:function(){
+
+			_openConfigPopUp: function() {
 				var configDialog = new RecentDocumentsFeatureConfiguration();
 				configDialog.show();
 			},

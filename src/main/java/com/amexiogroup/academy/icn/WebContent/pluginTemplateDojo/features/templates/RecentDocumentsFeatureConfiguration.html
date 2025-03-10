@@ -1,20 +1,14 @@
 <div>
-    <table class="propertyTable" role="presentation">
-        <tr>
-            <td class="propertyRowLabel">
-                <span class="required">*</span>
-                <label for="${id}_nombreJours">Nombre de jours fixe</label>&nbsp;
-                <div data-dojo-type="ecm.widget.HoverHelp" 
-                data-dojo-attach-point="desktopHoverHelp" 
-                message="renseigner le nombre de jours fixe"></div>
-            </td>
-            <td class="propertyRowValue">
-                <div id="${id}_nombreJours" 
-                data-dojo-attach-point="nombreJours" 
-                data-dojo-type="ecm.widget.NumberTextBox" 
-                required="true" trim="true" data-dojo-props="constraints:{min:1,max:30,places:0}" ></div>
-            </td>
-        </tr>
-    </table>
-    
+	<label for="nbreDeJours">Nombre de jours :</label> <input
+		data-dojo-type="ecm.widget.NumberTextBox"
+		data-dojo-attach-point="nbreDeJours"
+		data-dojo-props="constraints:{min:1,max:30,places:0}" />
+
+	<div
+		style="display: flex; justify-content: space-between; margin-top: 10px;">
+		<button data-dojo-type="dijit.form.Button"
+			data-dojo-attach-point="saveButton">Sauvegarder</button>
+		<button data-dojo-type="dijit.form.Button"
+			data-dojo-attach-point="closeButton">Fermer</button>
+	</div>
 </div>
