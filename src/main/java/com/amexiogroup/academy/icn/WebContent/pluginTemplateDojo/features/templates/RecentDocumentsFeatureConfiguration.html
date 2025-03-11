@@ -1,14 +1,18 @@
 <div>
-	<label for="nbreDeJours">Nombre de jours :</label> <input
-		data-dojo-type="ecm.widget.NumberTextBox"
-		data-dojo-attach-point="nbreDeJours"
-		data-dojo-props="constraints:{min:1,max:30,places:0}" />
+	<table class="propertyTable" role="presentation">
+		<tr>
+			<td class="propertyRowLabel"><span class="required">*</span> <label
+				for="${id}_days">Age des documents(en jours)</label>&nbsp;
+				<div data-dojo-type="ecm.widget.HoverHelp"
+					data-dojo-attach-point="daysHoverHelp"
+					message="provide the number of days witch is the duration of adding the documents to be displayed"></div>
+			</td>
+			<td class="propertyRowValue">
+				<div id="${id}_days" data-dojo-attach-point="days"
+					data-dojo-type="ecm.widget.NumberTextBox" required="true"
+					trim="true" propercase="false"></div>
+			</td>
+		</tr>
+	</table>
 
-	<div
-		style="display: flex; justify-content: space-between; margin-top: 10px;">
-		<button data-dojo-type="dijit.form.Button"
-			data-dojo-attach-point="saveButton">Sauvegarder</button>
-		<button data-dojo-type="dijit.form.Button"
-			data-dojo-attach-point="closeButton">Fermer</button>
-	</div>
 </div>

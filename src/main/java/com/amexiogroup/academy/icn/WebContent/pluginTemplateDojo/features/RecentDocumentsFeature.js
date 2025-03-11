@@ -4,7 +4,6 @@ define([
 	"ecm/widget/layout/_LaunchBarPane",
 	"dijit/_TemplatedMixin",
 	"dojo/text!./templates/RecentDocumentsFeature.html",
-	"./RecentDocumentsFeatureConfiguration",
 	"dojo/i18n!../nls/pluginMessages",
 
 	//Modules du comportement de contentList
@@ -17,43 +16,33 @@ define([
 	"ecm/widget/listView/modules/DocInfo",
 	"ecm/widget/listView/modules/Bar",
 	"ecm/widget/listView/modules/Toolbar",
-	"dijit/form/Button",//import dojo permettant l'affichage du btn de config
-
+	
 ],
-	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template, RecentDocumentsFeatureConfiguration, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar, Button) {
+	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar) {
 		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane, _TemplatedMixin], {
 
 			templateString: template,
 			nlsMessages: null,
-
-			//rattachement de la configuration du feature (A MIEUX COMPRENDRE)
-			/*
-			getConfigurationDijit: function() {
+			
+			//rattachement de la configuration du feature
+			getConfigurationDijit:function(){
 				return new RecentDocumentsFeatureConfiguration();
 			},
-			*/
 
 			constructor: function() {
 				console.debug("dans le contructor");
 				this.nlsMessages = nlsMessages;
 				this.templateString = lang.replace(this.templateString, this.nlsMessages);
+
 				console.debug("fin du constructor");
 
 			},
-
-
 
 			postCreate: function() {
 				console.debug("dans postCreate");
 				this.recentDocuments.setContentListModules(this._getContentListModules());
 				this.recentDocuments.setGridExtensionModules(this._getGridExtensionModules());
-				this._setupEvents();//pour setter le click sur le btn ....
-				console.debug("fin du postCreate")
-
-			},
-
-			_setupEvents: function() {
-				this.configButton.on("click", lang.hitch(this, this._openConfigPopUp));
+				
 			},
 
 			loadContent: function() {
@@ -93,12 +82,9 @@ define([
 
 				this.needReset = false;
 				this.isLoaded = true;
-				console.debug("fin du loadContent");
 			},
 
 			_getContentListModules: function() {
-				console.debug("dans _getContentListModules");
-
 				const modules = [];
 				modules.push({
 					moduleClass: DocInfo,
@@ -111,8 +97,8 @@ define([
 				//mon content list vas m'afficher une vue detail et une vue magasine
 				viewModules.push(ViewDetail);
 				viewModules.push(ViewMagazine);
-
-
+				
+				
 				modules.push({
 					moduleClass: Bar,
 					top: [[[
@@ -134,27 +120,17 @@ define([
 					]]]
 				});
 
-				console.debug("fin du _getContentListModules");
 
 				return modules;
 
 			},
 
 			_getGridExtensionModules: function() {
-				console.debug("debut du  _getGridExtensionModules");
-
 				const modules = [];
 				modules.push(RowContextMenu);
 				modules.push(DndFromDesktopAddDoc);
-				console.debug("fin du  _getGridExtensionModules");
 				return modules;
 			},
-
 			
-
-			_openConfigPopUp: function() {
-				var configDialog = new RecentDocumentsFeatureConfiguration();
-				configDialog.show();
-			},
 		});
 	});
