@@ -1,6 +1,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/json",
 	"ecm/widget/layout/_LaunchBarPane",
 	"dijit/_TemplatedMixin",
 	"dojo/text!./templates/RecentDocumentsFeature.html",
@@ -16,16 +17,16 @@ define([
 	"ecm/widget/listView/modules/DocInfo",
 	"ecm/widget/listView/modules/Bar",
 	"ecm/widget/listView/modules/Toolbar",
-	
+
 ],
-	function(declare, lang, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar) {
+	function(declare, lang, JSON, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar) {
 		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane, _TemplatedMixin], {
 
 			templateString: template,
 			nlsMessages: null,
-			
+
 			//rattachement de la configuration du feature
-			getConfigurationDijit:function(){
+			getConfigurationDijit: function() {
 				return new RecentDocumentsFeatureConfiguration();
 			},
 
@@ -40,43 +41,52 @@ define([
 
 			postCreate: function() {
 				console.debug("dans postCreate");
+				this.inherited(arguments);
+
 				this.recentDocuments.setContentListModules(this._getContentListModules());
 				this.recentDocuments.setGridExtensionModules(this._getGridExtensionModules());
-				
+
 			},
 
 			loadContent: function() {
-				console.debug("dans loadContent");
 
-				//au chargement rechercher les documents rajoutés il y a moins de 7 jours
+				let days = 7; // Valeur par défaut
+				let configurationString = {};
 
+				if (this.feature) {
+					console.log("contenu de la configuration de l'administrateur dans l'objet this.feature.pluginConfiguration ", this.feature.pluginConfiguration);
+					configurationString = JSON.parse(this.feature.pluginConfiguration);
+					console.log("apres conversion et passé a l'objet configurationString ", configurationString);
+					days = configurationString.days;
+					console.log("nouvelle valeur de days ", days);
+
+				}
+
+				console.log("Nombre de jours utilisé pour la requête :", days);
+
+				// Exécution de la requête SQL
 				const searchQuery = new ecm.model.SearchQuery({
-					//base de données :  premier des referentiel associé a mon mon bureau courant 
 					repository: ecm.model.desktop.repositories[0],
-					//requete : ce qu'on voudrai recupérer dans la bd (avec un trie order by exécuté coté serveur)
-					"query": "SELECT * FROM Document WHERE DateCreated > Now() - TimeSpan(7,'Days') ORDER BY DateCreated Desc",
-					//pagination
+					query: `SELECT * FROM Document WHERE DateCreated > Now() - TimeSpan(${days},'Days') ORDER BY DateCreated Desc`,
 					pageSize: 200,
 					resultsDisplay: {
 						columns: ["DocumentTitle", "DateCreated", "Creator", "ContentSize", "LastModifier"],
-						sortBy: "DateCreated",// un trie executé coté client
-						sortAsc: false,
+						sortBy: "DateCreated",
+						sortAsc: false
 					}
 				});
 
-				//execution de la requete , et recup du resultat (de type ResultSet) via une methode callback
+				// Exécution et affichage des résultats
 				searchQuery.search(
-					//succes callback : afficher les resultat sur le contenList
 					dojo.hitch(this, function(resultSet) {
-						console.info("resultats de la recherche", resultSet);
+						console.info("Documents récents trouvés :", resultSet);
 						this.recentDocuments.setResultSet(resultSet);
 					}),
 					null,
 					null,
 					null,
-					//error callback
 					dojo.hitch(this, function(error) {
-						console.error("erreur rencontré pendant la recherche des données", error)
+						console.error("Erreur de recherche :", error);
 					})
 				);
 
@@ -97,8 +107,8 @@ define([
 				//mon content list vas m'afficher une vue detail et une vue magasine
 				viewModules.push(ViewDetail);
 				viewModules.push(ViewMagazine);
-				
-				
+
+
 				modules.push({
 					moduleClass: Bar,
 					top: [[[
@@ -131,6 +141,6 @@ define([
 				modules.push(DndFromDesktopAddDoc);
 				return modules;
 			},
-			
+
 		});
 	});

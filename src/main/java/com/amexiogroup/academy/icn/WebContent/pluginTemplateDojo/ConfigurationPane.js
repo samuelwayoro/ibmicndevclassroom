@@ -25,6 +25,7 @@ define([
 			load: function(callback) {
 				
 				console.log("debut de la fonction callback");
+				
 				const configJSON = JSON.parse(this.configurationString);
 				
 				if (configJSON?.desktops) {
