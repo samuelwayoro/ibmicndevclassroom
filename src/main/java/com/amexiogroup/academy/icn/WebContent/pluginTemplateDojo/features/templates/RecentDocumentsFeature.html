@@ -1,7 +1,12 @@
 <div>
-	<h2>
-		{myFeatureTitle}
-	</h2>
+	<h2>{myFeatureTitle}</h2>
+
+	<!-- Ajout du champ de filtre -->
+	<input type="text" id="filterInput"
+		data-dojo-attach-point="filterInput"
+		placeholder="Rechercher un document..."
+		style="width: 15%; padding: 5px; margin-bottom: 10px;" />
+
 	<div id="recentDocuments" data-dojo-attach-point="recentDocuments"
 		data-dojo-type="ecm.widget.listView.ContentList"
 		emptyMessage="Aucun document récent à afficher"></div>

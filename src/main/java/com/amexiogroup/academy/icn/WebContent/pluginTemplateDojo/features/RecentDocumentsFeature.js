@@ -1,148 +1,135 @@
 define([
-	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/json",
-	"ecm/widget/layout/_LaunchBarPane",
-	"dijit/_TemplatedMixin",
-	"dojo/text!./templates/RecentDocumentsFeature.html",
-	"dojo/i18n!../nls/pluginMessages",
+    "dojo/_base/declare",
+    "dojo/_base/lang",
+    "dojo/json",
+    "dojo/on",//UTIL POUR ECOUTER LA SAISIE DU USER DANS LE FILTRE
+    "ecm/widget/layout/_LaunchBarPane",
+    "dijit/_TemplatedMixin",
+    "dojo/text!./templates/RecentDocumentsFeature.html",
+    "dojo/i18n!../nls/pluginMessages",
 
-	//Modules du comportement de contentList
-	"ecm/widget/listView/gridModules/RowContextMenu",
-	"ecm/widget/listView/gridModules/DndFromDesktopAddDoc", //pour le drag and drop
-
-	//Module graphiques 
-	"ecm/widget/listView/modules/ViewDetail",
-	"ecm/widget/listView/modules/ViewMagazine",
-	"ecm/widget/listView/modules/DocInfo",
-	"ecm/widget/listView/modules/Bar",
-	"ecm/widget/listView/modules/Toolbar",
-	"ecm/widget/listView/modules/FilterData",//import du filtre
+    // Modules pour le ContentList
+    "ecm/widget/listView/gridModules/RowContextMenu",
+    "ecm/widget/listView/gridModules/DndFromDesktopAddDoc",
+    
+    // Modules graphiques
+    "ecm/widget/listView/modules/ViewDetail",
+    "ecm/widget/listView/modules/ViewMagazine",
+    "ecm/widget/listView/modules/DocInfo",
+    "ecm/widget/listView/modules/Bar",
+    "ecm/widget/listView/modules/Toolbar"
 ],
-	function(declare, lang, JSON, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar, FilterData) {
-		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane, _TemplatedMixin], {
+function(
+    declare, lang, JSON, on, _LaunchBarPane, _TemplatedMixin, template, 
+    nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, 
+    DocInfo, Bar, Toolbar
+) {
+    return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane, _TemplatedMixin], {
+        
+        templateString: template,
+        nlsMessages: null,
 
-			templateString: template,
-			nlsMessages: null,
+        getConfigurationDijit: function() {
+            return new RecentDocumentsFeatureConfiguration();
+        },
 
-			//rattachement de la configuration du feature
-			getConfigurationDijit: function() {
-				return new RecentDocumentsFeatureConfiguration();
-			},
+        constructor: function() {
+            console.debug("Constructeur exécuté.");
+            this.nlsMessages = nlsMessages;
+            this.templateString = lang.replace(this.templateString, this.nlsMessages);
+        },
 
-			constructor: function() {
-				console.debug("dans le contructor");
-				this.nlsMessages = nlsMessages;
-				this.templateString = lang.replace(this.templateString, this.nlsMessages);
-				console.debug("fin du constructor");
+        postCreate: function() {
+            console.debug("Début postCreate.");
+            this.inherited(arguments);
 
-			},
+            this.recentDocuments.setContentListModules(this._getContentListModules());
+            this.recentDocuments.setGridExtensionModules(this._getGridExtensionModules());
 
-			postCreate: function() {
-				console.debug("debut postCreate");
-				this.inherited(arguments);
-				this.recentDocuments.setContentListModules(this._getContentListModules());
-				this.recentDocuments.setGridExtensionModules(this._getGridExtensionModules());
-				console.debug("fin postCreate");
+            // Attacher l'événement de filtre sur le champ input
+            this._setupFilterListener();
 
-			},
+            console.debug("Fin postCreate.");
+        },
 
-			loadContent: function() {
+        loadContent: function(filterValue) {
+            let days = 7;
+            let configurationString = {};
 
-				let days = 7; // Valeur par défaut
-				let configurationString = {};
+            if (this.feature) {
+                configurationString = JSON.parse(this.feature.pluginConfiguration);
+                days = configurationString.days;
+            }
 
-				if (this.feature) {
-					//console.log("contenu de la configuration de l'administrateur dans l'objet this.feature.pluginConfiguration ", this.feature.pluginConfiguration);
-					configurationString = JSON.parse(this.feature.pluginConfiguration);
-					//console.log("apres conversion et passé a l'objet configurationString ", configurationString);
-					days = configurationString.days;
-					//console.log("nouvelle valeur de days ", days);
+            console.log("Nombre de jours utilisé pour la requête :", days);
 
-				}
+            let query = `SELECT * FROM Document WHERE DateCreated > Now() - TimeSpan(${days},'Days')`;
 
-				console.log("Nombre de jours utilisé pour la requête :", days);
+            // Appliquer le filtre si du texte est saisi
+            if (filterValue && filterValue.length > 0) {
+                query += ` AND DocumentTitle LIKE '%${filterValue}%'`;
+            }
 
-				// Exécution de la requête SQL
-				const searchQuery = new ecm.model.SearchQuery({
-					repository: ecm.model.desktop.repositories[0],
-					query: `SELECT * FROM Document WHERE DateCreated > Now() - TimeSpan(${days},'Days') ORDER BY DateCreated Desc`,
-					pageSize: 200,
-					resultsDisplay: {
-						columns: ["DocumentTitle", "DateCreated", "Creator", "ContentSize", "LastModifier"],
-						sortBy: "DateCreated",
-						sortAsc: false
-					}
-				});
+            query += " ORDER BY DateCreated Desc";
 
-				// Exécution et affichage des résultats
-				searchQuery.search(
-					dojo.hitch(this, function(resultSet) {
-						console.info("Documents récents trouvés :", resultSet);
-						this.recentDocuments.setResultSet(resultSet);
-					}),
-					null,
-					null,
-					null,
-					dojo.hitch(this, function(error) {
-						console.error("Erreur de recherche :", error);
-					})
-				);
+            const searchQuery = new ecm.model.SearchQuery({
+                repository: ecm.model.desktop.repositories[0],
+                query: query,
+                pageSize: 200,
+                resultsDisplay: {
+                    columns: ["DocumentTitle", "DateCreated", "Creator", "ContentSize", "LastModifier"],
+                    sortBy: "DateCreated",
+                    sortAsc: false
+                }
+            });
 
-				this.needReset = false;
-				this.isLoaded = true;
-			},
+            searchQuery.search(
+                dojo.hitch(this, function(resultSet) {
+                    console.info("Documents trouvés :", resultSet);
+                    this.recentDocuments.setResultSet(resultSet);
+                }),
+                null, null, null,
+                dojo.hitch(this, function(error) {
+                    console.error("Erreur de recherche :", error);
+                })
+            );
+        },
 
-			_getContentListModules: function() {
+        _setupFilterListener: function() {
+            if (this.filterInput) {
+                on(this.filterInput, "keyup", dojo.hitch(this, function() {
+                    let filterText = this.filterInput.value.trim();
+                    console.log("Filtrage avec :", filterText);
+                    this.loadContent(filterText);
+                }));
+            }
+        },
 
+        _getContentListModules: function() {
+            const modules = [];
 
-				const modules = [];
+            modules.push({
+                moduleClass: DocInfo,
+                selectAutoOpen: true,
+                showSystemProps: false
+            });
 
-				modules.push({
-					moduleClass: DocInfo,
-					selectAutoOpen: true,
-					showSystemProps: false
-				});
+            const viewModules = [ViewDetail, ViewMagazine];
 
+            modules.push({
+                moduleClass: Bar,
+                top: [[[
+                    { moduleClasses: viewModules, "className": "BarViewModules" },
+                    { moduleClass: Toolbar }
+                ]]],
+                bottom: [[]]
+            });
 
-				const viewModules = [];
-				//mon content list vas m'afficher une vue detail et une vue magasine
-				viewModules.push(ViewDetail);
-				viewModules.push(ViewMagazine);
+            return modules;
+        },
 
-
-				modules.push({
-					moduleClass: Bar,
-					top: [[[
-						//filtre a utiliser plutard
-						{
-							//moduleClass: FilterDataServer,
-							moduleClass: FilterData,
-							"className": "BarFilterData"
-						},
-						{
-							moduleClasses: viewModules,
-							"className": "BarViewModules"
-						},
-						{ moduleClass: Toolbar }
-
-					]]],
-					bottom: [[[
-						//{ moduleClass: Toolbar } //barre d'outil plutot presentée en haut ici 
-					]]]
-				});
-
-
-				return modules;
-
-			},
-
-			_getGridExtensionModules: function() {
-				const modules = [];
-				modules.push(RowContextMenu);
-				modules.push(DndFromDesktopAddDoc);
-				return modules;
-			},
-
-		});
-	});
+        _getGridExtensionModules: function() {
+            return [RowContextMenu, DndFromDesktopAddDoc];
+        }
+    });
+});
