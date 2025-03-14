@@ -17,9 +17,9 @@ define([
 	"ecm/widget/listView/modules/DocInfo",
 	"ecm/widget/listView/modules/Bar",
 	"ecm/widget/listView/modules/Toolbar",
-
+	"ecm/widget/listView/modules/FilterData",//import du filtre
 ],
-	function(declare, lang, JSON, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar) {
+	function(declare, lang, JSON, _LaunchBarPane, _TemplatedMixin, template, nlsMessages, RowContextMenu, DndFromDesktopAddDoc, ViewDetail, ViewMagazine, DocInfo, Bar, Toolbar, FilterData) {
 		return declare("pluginTemplateDojo.features.RecentDocumentsFeature", [_LaunchBarPane, _TemplatedMixin], {
 
 			templateString: template,
@@ -34,17 +34,16 @@ define([
 				console.debug("dans le contructor");
 				this.nlsMessages = nlsMessages;
 				this.templateString = lang.replace(this.templateString, this.nlsMessages);
-
 				console.debug("fin du constructor");
 
 			},
 
 			postCreate: function() {
-				console.debug("dans postCreate");
+				console.debug("debut postCreate");
 				this.inherited(arguments);
-
 				this.recentDocuments.setContentListModules(this._getContentListModules());
 				this.recentDocuments.setGridExtensionModules(this._getGridExtensionModules());
+				console.debug("fin postCreate");
 
 			},
 
@@ -54,11 +53,11 @@ define([
 				let configurationString = {};
 
 				if (this.feature) {
-					console.log("contenu de la configuration de l'administrateur dans l'objet this.feature.pluginConfiguration ", this.feature.pluginConfiguration);
+					//console.log("contenu de la configuration de l'administrateur dans l'objet this.feature.pluginConfiguration ", this.feature.pluginConfiguration);
 					configurationString = JSON.parse(this.feature.pluginConfiguration);
-					console.log("apres conversion et passé a l'objet configurationString ", configurationString);
+					//console.log("apres conversion et passé a l'objet configurationString ", configurationString);
 					days = configurationString.days;
-					console.log("nouvelle valeur de days ", days);
+					//console.log("nouvelle valeur de days ", days);
 
 				}
 
@@ -95,7 +94,10 @@ define([
 			},
 
 			_getContentListModules: function() {
+
+
 				const modules = [];
+
 				modules.push({
 					moduleClass: DocInfo,
 					selectAutoOpen: true,
@@ -113,11 +115,11 @@ define([
 					moduleClass: Bar,
 					top: [[[
 						//filtre a utiliser plutard
-						/*
 						{
-							moduleClass: FilterDataServer,
+							//moduleClass: FilterDataServer,
+							moduleClass: FilterData,
 							"className": "BarFilterData"
-						},*/
+						},
 						{
 							moduleClasses: viewModules,
 							"className": "BarViewModules"
