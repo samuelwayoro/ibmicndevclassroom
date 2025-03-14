@@ -98,10 +98,10 @@ define([
 			_setupFilterListener: function() {
 				console.debug("debut de la méthode _setupFilterListener");
 				if (this.filterInput) {
-					console.debug("presence d'une saisie...");
+					console.debug("presence d'une saisie...", this.filterInput.get("value"));
 					on(this.filterInput, "keyup", dojo.hitch(this, function() {
-						console.debug("DONNEE SAISIE ", this.filterInput.value.trim());
-						let filterText = this.filterInput.value.trim();
+						console.debug("DONNEE SAISIE ", this.filterInput.get("value"));
+						let filterText = this.filterInput.get("value");
 						console.log("Filtrage avec :", filterText);
 						this.loadContent(filterText);
 					}));
